@@ -1,3 +1,5 @@
+import numpy as np
+
 class Problem(object):
 	"""docstring for Problem"""
 	def __init__(self, arg):
