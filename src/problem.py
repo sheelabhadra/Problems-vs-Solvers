@@ -23,10 +23,3 @@ class Problem(object):
 
 	def numStates(self):
 		pass
-
-	def solve(self):
-		pass
-
-	def getPath(self):
-		pass
-
