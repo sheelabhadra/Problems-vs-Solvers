@@ -74,6 +74,10 @@ def main():
     start_state = [1, 0, 3, 4, 2, 5, 7, 8, 6]
     N = np.sqrt(len(start_state) + 1)
 
+    goal_state = start_state[:]
+    goal_state.sort()
+    goal_state.append(goal_state.pop(0))
+
     # Check solvability by counting the number of inversions of the start state
     # Can be optimized using merge sort
     # http://www.cs.princeton.edu/courses/archive/spr18/cos226/assignments/8puzzle/index.html
@@ -106,8 +110,8 @@ def main():
     else:
         ucs_solver = UCS()
         ucs_solver.get_states = _get_states
-        total_cost = ucs_solver.run(start_state)
-        print(total_cost)
+        total_cost = ucs_solver.run(start_state, goal_state)
+        print("Minimum cost: ", total_cost)
 
 if __name__ == "__main__":
     main()

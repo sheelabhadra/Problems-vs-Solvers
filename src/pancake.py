@@ -25,12 +25,15 @@ def _get_states(state, dict_predecessors):
     return states
 
 def main(): 
-    start_state = [1, 2, 4, 3]
+    start_state = [3, 2, 4, 1]
+
+    goal_state = start_state[:]
+    goal_state.sort()
 
     ucs_solver = UCS()
     ucs_solver.get_states = _get_states
-    total_cost = ucs_solver.run(start_state)
-    print(total_cost)
+    total_cost = ucs_solver.run(start_state, goal_state)
+    print("Minimum Cost: ", total_cost)
 
 if __name__ == "__main__":
     main()
