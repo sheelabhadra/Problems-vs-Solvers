@@ -64,8 +64,6 @@ class PancakeUCS(UCS):
 	    return states
 
 
-
-
 def main(): 
 	start_state = [1, 2, 4, 3]
 

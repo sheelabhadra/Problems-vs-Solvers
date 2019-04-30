@@ -113,7 +113,6 @@ class UCS:
         if len(down_state):
             add_state(down_state, down_state_cost)
 
-        print(states)
         return states
         # len_state, states = len(state), []
 

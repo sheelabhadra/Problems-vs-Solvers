@@ -74,11 +74,38 @@ from ucs import *
 #     return states
 
 def main(): 
-    start_state = [1, 0, 3, 4, 2, 5, 7, 8, 6]
+    start_state = [1, 2, 3, 0, 4, 6, 8, 5, 7]
+    N = np.sqrt(len(start_state) + 1)
 
-    ucs_solver = UCS()
-    total_cost = ucs_solver.run(start_state)
-    print(total_cost)
+    # Check solvability by counting the number of inversions of the start state
+    # Can be optimized using merge sort
+    blank_idx = start_state.index(0)
+    blank_row = blank_idx//N
+
+    start_state.pop(blank_idx)
+
+    num_inversions = 0
+    for i in range(len(start_state)):
+        for j in range(i+1, len(start_state)):
+            if start_state[i] > start_state[j]:
+                num_inversions += 1
+
+    is_solvable = False
+    # N - odd case
+    if N%2:
+        if not num_inversions%2:
+            is_solvable = True
+    else:
+        if (num_inversions + blank_row)%2:
+            is_solvable = True
+
+    if not is_solvable:
+        print("The given configuration is not solvable!")
+
+    else:
+        ucs_solver = UCS()
+        total_cost = ucs_solver.run(start_state)
+        print(total_cost)
     
 
 if __name__ == "__main__":
