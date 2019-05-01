@@ -1,2 +1,10 @@
 # Problems-vs-Solvers
-Solving NP-complete problems with various solvers.
+Solving simple puzzles and games with solvers.  
+
+## Games:
+- [x] Pancake puzzle  
+- [x] Tile puzzle
+
+## Solvers:
+- [x] Uniform Cost Search
+- [ ] A*
