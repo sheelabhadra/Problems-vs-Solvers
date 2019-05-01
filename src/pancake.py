@@ -1,7 +1,20 @@
+from typing import Dict, List
 from ucs import *
 from problem import *
+import timeit
+import argparse
 
-def _get_states(state, dict_predecessors):
+def _get_states(state: List[int], dict_predecessors: Dict[str, List]) -> int:
+    """Gets the neighbor states (next states of child nodes) of the given state
+
+    Args:
+        state: The given state
+        dict_predecessors: A dictionary containing the parents of the given state
+
+    Returns:
+        states: The neighbor states
+
+    """
     len_state, states = len(state), []
 
     for i in range(len_state):
@@ -26,15 +39,23 @@ def _get_states(state, dict_predecessors):
     return states
 
 def main():
-    start_state = [3, 2, 4, 1]
+    N = int(input("Enter the number of pancakes: "))
+    start_state = eval(input("Enter the start state (e.g. [1, 2, 3, 4] for N = 4): "))
+    while len(start_state) != N:
+        print("Number of pancakes is not ", N)
+        start_state = eval(input("Re-enter the start state (e.g. [1, 2, 3, 4] for N = 4): "))
 
     goal_state = start_state[:]
     goal_state.sort()
 
     ucs_solver = UCS()
     ucs_solver.get_states = _get_states
-    total_cost = ucs_solver.run(start_state, goal_state)
+    start = timeit.default_timer()
+    total_cost, optimal_path = ucs_solver.run(start_state, goal_state)
+    stop = timeit.default_timer()
+    print("Optimal sequence of states (Start State -> Intermediate States -> Goal State):\n", optimal_path)
     print("Minimum Cost: ", total_cost)
+    print("Elapsed time: {0:.4f} secs".format(stop - start))
 
 if __name__ == "__main__":
     main()

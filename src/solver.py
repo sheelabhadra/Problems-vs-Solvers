@@ -1,5 +1,5 @@
+from typing import Dict, List
 import heapq
-
 
 class PriorityQueue:
     def __init__(self):
@@ -50,15 +50,15 @@ class Solver:
     def __init__(self):
         self.graph = Graph()
 
-    def get_states(self):
+    def get_states(self, *args, **kwargs):
         pass
 
-    def get_optimal_path(self, node, goal_state):
+    def get_optimal_path(self, node, goal_state: List[int]) -> List[List[int]]:
         path_dict = self.graph.getPredecessors(node)
         optimal_path = [goal_state]
         for key, state in path_dict.items():
             optimal_path.append(state)
         return optimal_path[::-1]
 
-    def run(self):
+    def run(self, *args, **kwargs):
         pass

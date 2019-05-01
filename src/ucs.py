@@ -1,3 +1,4 @@
+from typing import Dict, List
 import numpy as np
 from solver import Solver, Node, Graph, PriorityQueue
 
@@ -6,7 +7,7 @@ class UCS(Solver):
     def __init__(self):
         super().__init__()
     
-    def run(self, start_state, goal_state):
+    def run(self, start_state: List[int], goal_state: List[int]) -> int:
         # frontier of the graph is a priority queue
         frontier = PriorityQueue()
 
@@ -17,8 +18,7 @@ class UCS(Solver):
             node, cost_node = frontier.remove()
 
             if node.getState() == goal_state:
-                print("Optimal sequence of states:", self.get_optimal_path(node, goal_state))
-                return cost_node
+                return cost_node, self.get_optimal_path(node, goal_state)
 
             neighbors = self.get_states(node.getState(), self.graph.getPredecessors(node))
 
