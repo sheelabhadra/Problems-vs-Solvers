@@ -1,4 +1,5 @@
 from ucs import *
+from problem import *
 
 def _get_states(state, dict_predecessors):
     ## TILE PUZZLE
@@ -70,17 +71,11 @@ def _get_states(state, dict_predecessors):
 
     return states
 
-def main(): 
-    start_state = [1, 0, 3, 4, 2, 5, 7, 8, 6]
-    N = np.sqrt(len(start_state) + 1)
-
-    goal_state = start_state[:]
-    goal_state.sort()
-    goal_state.append(goal_state.pop(0))
-
+def is_solvable(start_state):
     # Check solvability by counting the number of inversions of the start state
     # Can be optimized using merge sort
     # http://www.cs.princeton.edu/courses/archive/spr18/cos226/assignments/8puzzle/index.html
+    N = np.sqrt(len(start_state))
     start_state_cpy = start_state[:]
     blank_idx = start_state_cpy.index(0)
     blank_row = blank_idx//N
@@ -92,19 +87,29 @@ def main():
         for j in range(i+1, len(start_state_cpy)):
             if start_state_cpy[i] > start_state_cpy[j]:
                 num_inversions += 1
-
-    is_solvable = False
+    
     # N - odd case
     if N%2:
         if not num_inversions%2:
-            is_solvable = True
+            return True
 
     # N - even case
     else:
         if (num_inversions + blank_row)%2:
-            is_solvable = True
+            return True
 
-    if not is_solvable:
+    return False
+
+
+def main(): 
+    start_state = [1, 0, 3, 4, 2, 5, 7, 8, 6]
+
+    goal_state = start_state[:]
+    goal_state.sort()
+    goal_state.append(goal_state.pop(0))
+
+    # Check solvability
+    if not is_solvable(start_state):
         print("The given configuration is not solvable!")
 
     else:

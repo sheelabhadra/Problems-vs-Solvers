@@ -1,44 +1,11 @@
 import numpy as np
-from solver import PriorityQueue
+from solver import Solver, Node, Graph, PriorityQueue
 
-class Node:
-    def __init__(self, state):
-        self.state, self.parent = state, None
-
-    def getState(self):
-        return self.state
-
-    def setParent(self, parent):
-        self.parent = parent
-
-    def getParent(self):
-        return self.parent
-
-class Graph:
-    def setParent(self, source, destination, cost):
-        destination.setParent(source)
-
-    def getPredecessors(self, node):
-        predecessors, current_parent = {}, node.getParent()
-        while(current_parent):
-            predecessors[str(current_parent.getState())] = current_parent.getState()
-            current_parent = current_parent.getParent()
-        return predecessors
-
-class UCS:
+class UCS(Solver):
+    """docstring for UCS"""
     def __init__(self):
-        self.graph = Graph()
-
-    def get_states(self):
-        pass
-
-    def get_optimal_path(self, node, goal_state):
-        path_dict = self.graph.getPredecessors(node)
-        optimal_path = [goal_state]
-        for key, state in path_dict.items():
-            optimal_path.append(state)
-        return optimal_path[::-1]
-
+        super().__init__()
+    
     def run(self, start_state, goal_state):
         # frontier of the graph is a priority queue
         frontier = PriorityQueue()
@@ -62,4 +29,3 @@ class UCS:
                     self.graph.setParent(node, neighbor_node, cost_edge)
                     cumulative_cost = cost_node + cost_edge
                     frontier.insert((neighbor_node, cumulative_cost), cumulative_cost)
-

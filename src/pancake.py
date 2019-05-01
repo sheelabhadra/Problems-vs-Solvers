@@ -1,4 +1,5 @@
 from ucs import *
+from problem import *
 
 def _get_states(state, dict_predecessors):
     len_state, states = len(state), []
@@ -24,7 +25,7 @@ def _get_states(state, dict_predecessors):
 
     return states
 
-def main(): 
+def main():
     start_state = [3, 2, 4, 1]
 
     goal_state = start_state[:]
