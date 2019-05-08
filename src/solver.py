@@ -1,28 +1,11 @@
-from typing import Dict, List
-import heapq
-
-class PriorityQueue:
-    def __init__(self):
-        self._queue = []
-        self._index = 0
-
-    def insert(self, item, priority):
-        heapq.heappush(self._queue, (priority, self._index, item))
-        self._index += 1
-
-    def remove(self):
-        return heapq.heappop(self._queue)[-1]
-
-    def is_empty(self):
-        return len(self._queue) == 0
-
-    def size(self):
-        return len(self._queue)
-
-       
 class Node:
     def __init__(self, state):
-        self.state, self.parent = state, None
+        self.state = state
+        self.parent = None
+        self.cost = None
+        self.g = self.getPathCost()
+        self.h = self.getHeuristicCost()
+        self.f = self.getTotalCost()
 
     def getState(self):
         return self.state
@@ -32,6 +15,18 @@ class Node:
 
     def getParent(self):
         return self.parent
+
+    def getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) -> List[List[int]]:
+        pass
+
+    def getPathCost(self):
+        pass
+
+    def getHeuristicCost(self):
+        return 0
+
+    def getTotalCost(self):
+        return self.g + self.h
 
 
 class Graph:
@@ -49,16 +44,20 @@ class Graph:
 class Solver:
     def __init__(self):
         self.graph = Graph()
+        self.cost = float('inf')
+        self.optimal_path = None
 
-    def get_states(self, *args, **kwargs):
-        pass
-
-    def get_optimal_path(self, node, goal_state: List[int]) -> List[List[int]]:
-        path_dict = self.graph.getPredecessors(node)
+    def get_optimal_path(self, goal_node, goal_state: List[int]) -> List[List[int]]:
+        path_dict = self.graph.getPredecessors(goal_node)
         optimal_path = [goal_state]
         for key, state in path_dict.items():
             optimal_path.append(state)
         return optimal_path[::-1]
 
-    def run(self, *args, **kwargs):
+    def solve(self, *args, **kwargs):
         pass
+
+    def get_statistics(self):
+        # minimum cost, optimal path
+        return (self.cost, self.optimal_path)
+

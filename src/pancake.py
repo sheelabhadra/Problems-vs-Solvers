@@ -1,10 +1,10 @@
 from typing import Dict, List
 from ucs import *
-from problem import *
+from solver import *
 import timeit
 import argparse
 
-def _get_states(state: List[int], dict_predecessors: Dict[str, List]) -> int:
+def _get_states(state: List[int], dict_predecessors: Dict[str, List]) -> List[List[int]]:
     """Gets the neighbor states (next states of child nodes) of the given state
 
     Args:
@@ -37,6 +37,15 @@ def _get_states(state: List[int], dict_predecessors: Dict[str, List]) -> int:
         states.pop(0) # removes the first state which is the same as the first state
 
     return states
+
+
+def run_experiments():
+    """
+    Should only contain the start node and the goal node as input
+    
+    """
+    pass
+
 
 def main():
     N = int(input("Enter the number of pancakes: "))
