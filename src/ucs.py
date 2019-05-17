@@ -1,6 +1,7 @@
 from typing import Dict, List
 import numpy as np
-from solver import Solver, Node, Graph, PriorityQueue
+from solver import Solver, Node, Graph
+from utils import PriorityQueue
 
 class UCS(Solver):
     """docstring for UCS"""
@@ -12,7 +13,9 @@ class UCS(Solver):
         frontier = PriorityQueue()
 
         # each item is a tuple (node, cumulative_cost)
-        frontier.insert((Node(start_state), 0), 0)
+        start_node = Node(start_state)
+        start_node.g = 0
+        frontier.insert((start_node, 0), 0)
 
         while not frontier.is_empty():
             node, cost_node = frontier.remove()
@@ -30,5 +33,6 @@ class UCS(Solver):
                     state_neighbor, cost_edge = neighbor # unpack the tuple (state, cost_edge)
                     neighbor_node = Node(state_neighbor)
                     self.graph.setParent(node, neighbor_node, cost_edge)
-                    cumulative_cost = self.cost_node + cost_edge
+                    cumulative_cost = cost_node + cost_edge
+                    neighbor_node.g = cumulative_cost
                     frontier.insert((neighbor_node, cumulative_cost), cumulative_cost)

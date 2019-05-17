@@ -1,11 +1,12 @@
+from typing import Dict, List
+
 class Node:
     def __init__(self, state):
         self.state = state
         self.parent = None
-        self.cost = None
-        self.g = self.getPathCost()
-        self.h = self.getHeuristicCost()
-        self.f = self.getTotalCost()
+        self.g = 0
+        self.h = 0
+        self.f = self.g + self.h
 
     def getState(self):
         return self.state
@@ -16,7 +17,7 @@ class Node:
     def getParent(self):
         return self.parent
 
-    def getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) -> List[List[int]]:
+    def getNeighbors(self, *args, **kwargs):
         pass
 
     def getPathCost(self):
@@ -59,5 +60,6 @@ class Solver:
 
     def get_statistics(self):
         # minimum cost, optimal path
-        return (self.cost, self.optimal_path)
+        stats = {'cost': self.cost, 'optimal_path': self.optimal_path}
+        return stats
 
