@@ -86,22 +86,26 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) ->
     if (blank_idx+1)%N: # not on the right edge
         # right
         right_state = swap(state, blank_idx, blank_idx+1)
-        right_state_cost = get_manhattan_cost(right_state)
+        # right_state_cost = get_manhattan_cost(right_state)
+        right_state_cost = 1
 
-    if (blank_idx+1)//N: # not on the top edge           
+    if (blank_idx)//N: # not on the top edge           
         # up
         up_state = swap(state, blank_idx, blank_idx-N)
-        up_state_cost = get_manhattan_cost(up_state)
+        # up_state_cost = get_manhattan_cost(up_state)
+        up_state_cost = 1
 
     if (blank_idx+1)%N != 1: # not on the left edge
         # left 
         left_state = swap(state, blank_idx, blank_idx-1)
-        left_state_cost = get_manhattan_cost(left_state)
+        # left_state_cost = get_manhattan_cost(left_state)
+        left_state_cost = 1
 
-    if (blank_idx+1)//N != N: # not on the bottom edge
+    if (blank_idx)//N != N-1: # not on the bottom edge
         # down
         down_state = swap(state, blank_idx, blank_idx+N)
-        down_state_cost = get_manhattan_cost(down_state)
+        # down_state_cost = get_manhattan_cost(down_state)
+        down_state_cost = 1
 
     # add the possible neighbor states
     if len(left_state):
@@ -153,14 +157,14 @@ def is_solvable(start_state: List[int]) -> bool:
     return False
 
 
-def run_experiments(start_state, goal_state):
+def run_experiments(start_state, goal_state, solver):
     """
     Should only contain the start node and the goal node as input
     
     """
     Node.getNeighbors = _getNeighbors
     
-    ucs_solver = UCS()
+    ucs_solver = solver
     ucs_solver.solve(start_state, goal_state)
     stats = ucs_solver.get_statistics()
     print(stats)
@@ -169,7 +173,7 @@ def run_experiments(start_state, goal_state):
 def main():
     start = [1, 0, 3, 4, 2, 5, 7, 8, 6]
     goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-    run_experiments(start, goal)
+    run_experiments(start, goal, UCS())
 
 if __name__ == "__main__":
     main()

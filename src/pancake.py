@@ -4,6 +4,9 @@ from solver import *
 import timeit
 import yaml
 
+# # Read YAML file
+# with open("../config.yml", 'r') as stream:
+#     cfg = yaml.safe_load(stream)
 
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) -> List[List[int]]:
     len_state, states = len(state), []
@@ -21,8 +24,11 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) ->
         list_state = sub_list + tail_list
 
         # insert the states and the edge cost if the state does not exist in dict_predecessors
+        # if str(list_state) not in dict_predecessors:
+        #     states.append((list_state, i+1)) # cost: number of pancakes flipped
+        
         if str(list_state) not in dict_predecessors:
-            states.append((list_state, i+1))
+            states.append((list_state, 1)) # cost: number of flips
 
     if len(states):
         states.pop(0) # removes the first state which is the same as the first state
@@ -30,14 +36,14 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) ->
     return states
 
 
-def run_experiments(start_state, goal_state):
+def run_experiments(start_state, goal_state, solver):
     """
     Should only contain the start node and the goal node as input
     
     """
     Node.getNeighbors = _getNeighbors
     
-    ucs_solver = UCS()
+    ucs_solver = solver
     ucs_solver.solve(start_state, goal_state)
     stats = ucs_solver.get_statistics()
     print(stats)
@@ -46,7 +52,7 @@ def run_experiments(start_state, goal_state):
 def main():
     start = [3,2,4,1] 
     goal = [1,2,3,4]
-    run_experiments(start, goal)
+    run_experiments(start, goal, UCS())
 
 if __name__ == "__main__":
     main()
