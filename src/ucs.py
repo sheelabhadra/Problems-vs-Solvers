@@ -14,8 +14,7 @@ class UCS(Solver):
 
         # each item is a tuple (node, cumulative_cost)
         start_node = Node(start_state)
-        start_node.g = 0
-        frontier.insert((start_node, 0), 0)
+        frontier.insert((start_node, start_node.g), start_node.g)
 
         while not frontier.is_empty():
             node, cost_node = frontier.remove()

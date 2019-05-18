@@ -28,13 +28,15 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List]) ->
         #     states.append((list_state, i+1)) # cost: number of pancakes flipped
         
         if str(list_state) not in dict_predecessors:
-            states.append((list_state, 1)) # cost: number of flips
+            g_cost = 1
+            h_cost = 0
+            f_cost = g_cost + h_cost
+            states.append((list_state, g_cost)) # cost: number of flips
 
     if len(states):
         states.pop(0) # removes the first state which is the same as the first state
 
     return states
-
 
 def run_experiments(start_state, goal_state, solver):
     """
