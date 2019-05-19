@@ -47,6 +47,7 @@ class Solver:
         self.graph = Graph()
         self.cost = float('inf')
         self.optimal_path = None
+        self.use_heuristic_cost = False
 
     def get_optimal_path(self, goal_node, goal_state: List[int]) -> List[List[int]]:
         path_dict = self.graph.getPredecessors(goal_node)
