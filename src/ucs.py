@@ -25,7 +25,7 @@ class UCS(Solver):
                 self.optimal_path = self.get_optimal_path(node, goal_state)
                 return
 
-            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node))
+            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost)
 
             if neighbors:
                 for neighbor in neighbors:
