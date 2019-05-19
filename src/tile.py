@@ -2,7 +2,6 @@ from typing import Dict, List
 from ucs import *
 from problem import *
 import timeit
-import yaml
 
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost) -> List[List[int]]:
     """Gets the neighbor states (next states of child nodes) of the given state
@@ -177,7 +176,7 @@ def is_solvable(start_state: List[int]) -> bool:
     return False
 
 
-def run_experiments(start_state, goal_state, solver):
+def run_solver(start_state, goal_state, solver):
     """
     Should only contain the start node and the goal node as input
     
@@ -188,42 +187,3 @@ def run_experiments(start_state, goal_state, solver):
     ucs_solver.solve(start_state, goal_state)
     stats = ucs_solver.get_statistics()
     print(stats)
-
-
-def main():
-    start = [1, 0, 3, 4, 2, 5, 7, 8, 6]
-    goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-    run_experiments(start, goal, UCS())
-
-if __name__ == "__main__":
-    main()
-
-
-# def main():
-#     N = int(input("Enter the tile size (e.g. 3 (for 8-tile) or 4 (for 15-tile)): "))
-#     start_state = eval(input("Enter the start state (e.g. [1, 0, 3, 4, 2, 5, 7, 8, 6] for N = 3): "))
-    
-#     while np.sqrt(len(start_state)) != N:
-#         print("Number of elements in the tile must be ", N**2)
-#         start_state = eval(input("Re-enter the start state (e.g. [1, 0, 3, 4, 2, 5, 7, 8, 6] for N = 3): "))
-
-#     goal_state = start_state[:]
-#     goal_state.sort()
-#     goal_state.append(goal_state.pop(0))
-
-#     # Check solvability
-#     if not is_solvable(start_state):
-#         print("The given configuration is not solvable!")
-
-#     else:
-#         ucs_solver = UCS()
-#         ucs_solver.get_states = _get_states
-#         start = timeit.default_timer()
-#         total_cost, optimal_path = ucs_solver.run(start_state, goal_state)
-#         stop = timeit.default_timer()
-#         print("Optimal sequence of states (Start State -> Intermediate States -> Goal State):\n", [np.reshape(x, (N, N)) for x in optimal_path])
-#         print("Minimum cost: ", total_cost)
-#         print("Elapsed time: {0:.4f} secs".format(stop - start))
-
-# if __name__ == "__main__":
-#     main()
