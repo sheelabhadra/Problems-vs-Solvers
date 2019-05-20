@@ -22,7 +22,7 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         if str(list_state) not in dict_predecessors:
             g_cost = 1 # i+1 
             if use_heuristic_cost:
-                h_cost = 0                
+                h_cost = 0
             else:
                 h_cost = 0
             f_cost = g_cost + h_cost
@@ -44,4 +44,3 @@ def run_solver(start_state, goal_state, solver):
     pancake_solver.solve(start_state, goal_state)
     stats = pancake_solver.get_statistics()
     print(stats)
-    
