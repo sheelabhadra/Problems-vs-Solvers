@@ -182,4 +182,5 @@ def run_solver(start_state, goal_state, solver):
     ucs_solver = solver
     ucs_solver.solve(start_state, goal_state)
     stats = ucs_solver.get_statistics()
+    print('TILE')
     print(stats)

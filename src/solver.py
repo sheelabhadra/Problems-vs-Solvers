@@ -1,4 +1,5 @@
 from typing import Dict, List
+from abc import abstractmethod
 
 class Node:
     def __init__(self, state):
@@ -17,6 +18,7 @@ class Node:
     def getParent(self):
         return self.parent
 
+    @abstractmethod
     def getNeighbors(self, *args, **kwargs):
         pass
 
@@ -56,6 +58,7 @@ class Solver:
             optimal_path.append(state)
         return optimal_path[::-1]
 
+    @abstractmethod
     def solve(self, *args, **kwargs):
         pass
 

@@ -20,11 +20,15 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
 
         # insert the states and the edge cost if the state does not exist in dict_predecessors
         if str(list_state) not in dict_predecessors:
-            g_cost = 1 # i+1 
+            g_cost = 1 # i+1
+            h_cost = 0
             if use_heuristic_cost:
                 h_cost = 0
-            else:
-                h_cost = 0
+                for i in range(len(list_state)):
+                    for j in range(len(goal_state)):
+                        if list_state[i] == goal_state[j]:
+                            h_cost += abs(j-i)
+
             f_cost = g_cost + h_cost
             states.append((list_state, f_cost)) # cost: number of flips
 
@@ -43,4 +47,5 @@ def run_solver(start_state, goal_state, solver):
     pancake_solver = solver
     pancake_solver.solve(start_state, goal_state)
     stats = pancake_solver.get_statistics()
+    print('PANCAKE')
     print(stats)
