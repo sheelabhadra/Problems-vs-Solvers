@@ -3,7 +3,7 @@ from ucs import *
 from solver import *
 import timeit
 
-def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost) -> List[List[int]]:
+def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     len_state, states = len(state), []
 
     for i in range(len_state):

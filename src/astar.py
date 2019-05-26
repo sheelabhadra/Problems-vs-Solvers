@@ -3,10 +3,11 @@ import numpy as np
 from solver import Solver, Node, Graph
 from utils import PriorityQueue
 
-class UCS(Solver):
+class AStar(Solver):
     """docstring for UCS"""
     def __init__(self):
         super().__init__()
+        self.use_heuristic_cost = True
     
     def solve(self, start_state: List[int], goal_state: List[int]) -> int:
         # frontier of the graph is a priority queue
@@ -25,7 +26,7 @@ class UCS(Solver):
                 self.optimal_path = self.get_optimal_path(node, goal_state)
                 return
 
-            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost, goal_state)
+            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost)
 
             if neighbors:
                 for neighbor in neighbors:

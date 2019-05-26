@@ -3,7 +3,7 @@ from ucs import *
 from problem import *
 import timeit
 
-def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost) -> List[List[int]]:
+def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     """Gets the neighbor states (next states of child nodes) of the given state
 
     Args:
@@ -24,10 +24,6 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
             manhattan_cost: The Manhattan distance
 
         """
-        goal_state = state[:]
-        goal_state.sort()
-        goal_state.append(goal_state.pop(0))
-
         state_tile = np.reshape(state, (N, N))
         goal_state_tile = np.reshape(goal_state, (N, N))
 
