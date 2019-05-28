@@ -7,4 +7,4 @@ Solving simple puzzles and games with solvers.
 
 ## Solvers:
 - [x] Uniform Cost Search
-- [ ] A*
+- [x] A*
