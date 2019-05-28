@@ -35,4 +35,5 @@ class UCS(Solver):
                     if (str(neighbor.getState()) not in self.cost_so_far) or (new_cost < self.cost_so_far[str(neighbor.getState())]):
                         self.cost_so_far[str(neighbor.getState())] = new_cost
                         self.graph.setParent(node, neighbor, neighbor.g)
-                        frontier.insert(neighbor, str(neighbor.getState()), new_cost) # new_cost: priority
+                        priority = new_cost # new_cost: priority
+                        frontier.insert(neighbor, str(neighbor.getState()), priority)

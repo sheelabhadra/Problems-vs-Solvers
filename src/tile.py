@@ -1,4 +1,5 @@
 from typing import Dict, List
+from solver import Solver, Node, Graph
 from ucs import *
 from astar import *
 import timeit
@@ -55,19 +56,6 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         new_state[idx1], new_state[idx2] = new_state[idx2], new_state[idx1]
         return new_state
 
-    def add_state(state: List[int], state_cost: int) -> List[List[int]]:
-        """Adds a state to the list of states
-
-        Args:
-            state: The given state
-            state_cost: The cumulative cost of the state
-
-        Returns:
-            states: List of states with the new state added to it
-
-        """
-        if str(state) not in dict_predecessors:
-            states.append((state, state_cost))
 
     len_state, states = len(state), []
     N = int(np.sqrt(len_state))
@@ -124,14 +112,21 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
 
     # add the possible neighbor states
     if left_state:
-        add_state(left_state, f_cost_left)
+        left_state = Node(left_state)
+        left_state.g, left_state.h = g_cost_left, h_cost_left
+        states.append(left_state)
     if right_state:
-        add_state(right_state, f_cost_right)
+        right_state = Node(right_state)
+        right_state.g, right_state.h = g_cost_right, h_cost_right
+        states.append(right_state)
     if up_state:
-        add_state(up_state, f_cost_up)
+        up_state = Node(up_state)
+        up_state.g, up_state.h = g_cost_up, h_cost_up
+        states.append(up_state)
     if down_state:
-        add_state(down_state, f_cost_down)
-
+        down_state = Node(down_state)
+        down_state.g, down_state.h = g_cost_down, h_cost_down
+        states.append(down_state)
     return states
 
 def is_solvable(start_state: List[int]) -> bool:

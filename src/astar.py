@@ -15,15 +15,16 @@ class AStar(Solver):
 
         # each item is a tuple (node, cumulative_cost)
         start_node = Node(start_state)
-        frontier.insert((start_node, 0), 0)
+        start_node.g, start_node.h = 0, 0
+        frontier.insert(start_node, str(start_node.getState()), 0)
         self.cost_so_far[str(start_node.getState())] = 0
 
         while not frontier.is_empty():
-            node, cost_node = frontier.remove()
+            node = frontier.remove()
 
             if node.getState() == goal_state:
                 # save some stats here
-                self.cost = cost_node
+                self.cost = self.cost_so_far[str(node.getState())]
                 self.optimal_path = self.get_optimal_path(node, goal_state)
                 return
 
@@ -31,9 +32,9 @@ class AStar(Solver):
 
             if neighbors:
                 for neighbor in neighbors:
-                    state_neighbor, cost_edge = neighbor # unpack the tuple (state, cost_edge)
-                    neighbor_node = Node(state_neighbor)
-                    self.graph.setParent(node, neighbor_node, cost_edge)
-                    cumulative_cost = cost_node + cost_edge
-                    neighbor_node.g = cumulative_cost
-                    frontier.insert((neighbor_node, cumulative_cost), cumulative_cost)
+                    new_cost = self.cost_so_far[str(node.getState())] + neighbor.g # actual cost
+                    if (str(neighbor.getState()) not in self.cost_so_far) or (new_cost < self.cost_so_far[str(neighbor.getState())]):
+                        self.cost_so_far[str(neighbor.getState())] = new_cost
+                        self.graph.setParent(node, neighbor, neighbor.g)
+                        priority = new_cost + neighbor.h # new_cost + heuristic cost: priority
+                        frontier.insert(neighbor, str(neighbor.getState()), priority) # new_cost: priority
