@@ -15,7 +15,8 @@ class AStar(Solver):
 
         # each item is a tuple (node, cumulative_cost)
         start_node = Node(start_state)
-        frontier.insert((start_node, start_node.g), start_node.g)
+        frontier.insert((start_node, 0), 0)
+        self.cost_so_far[str(start_node.getState())] = 0
 
         while not frontier.is_empty():
             node, cost_node = frontier.remove()
@@ -26,7 +27,7 @@ class AStar(Solver):
                 self.optimal_path = self.get_optimal_path(node, goal_state)
                 return
 
-            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost)
+            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost, goal_state)
 
             if neighbors:
                 for neighbor in neighbors:

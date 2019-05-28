@@ -48,6 +48,7 @@ class Solver:
     def __init__(self):
         self.graph = Graph()
         self.cost = float('inf')
+        self.cost_so_far = {}
         self.optimal_path = None
         self.use_heuristic_cost = False
 

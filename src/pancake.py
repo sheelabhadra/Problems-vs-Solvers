@@ -1,12 +1,13 @@
 from typing import Dict, List
+from solver import Solver, Node, Graph
 from ucs import *
-from solver import *
+from astar import *
 import timeit
 
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     len_state, states = len(state), []
 
-    for i in range(len_state):
+    for i in range(1, len_state):
         sub_list = state[0:i+1]
         len_sub_list = len(sub_list)
 
@@ -19,21 +20,22 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         list_state = sub_list + tail_list
 
         # insert the states and the edge cost if the state does not exist in dict_predecessors
-        if str(list_state) not in dict_predecessors:
-            g_cost = 1 # i+1
-            h_cost = 0
-            if use_heuristic_cost:
-                h_cost = 0
-                for i in range(len(list_state)):
-                    for j in range(len(goal_state)):
-                        if list_state[i] == goal_state[j]:
-                            h_cost += abs(j-i)
+        # if str(list_state) not in dict_predecessors:
+        g_cost = 1 # i+1
+        h_cost = 0
+        if use_heuristic_cost:
+            for i in range(len(list_state)):
+                if list_state[i] != goal_state[i]:
+                    h_cost += 1
 
-            f_cost = g_cost + h_cost
-            states.append((list_state, f_cost)) # cost: number of flips
+        f_cost = g_cost + h_cost
+        list_state = Node(list_state)
+        list_state.g, list_state.h = g_cost, h_cost
 
-    if len(states):
-        states.pop(0) # removes the first state which is the same as the first state
+        states.append((list_state)) # cost: number of flips
+
+    # if len(states):
+    #     states.pop(0) # removes the first state which is the same as the state
 
     return states
 

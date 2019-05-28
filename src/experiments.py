@@ -1,6 +1,7 @@
 import yaml
 import pancake, tile
 from ucs import *
+from astar import *
 
 # Read YAML file
 with open("../config.yml", 'r') as stream:
