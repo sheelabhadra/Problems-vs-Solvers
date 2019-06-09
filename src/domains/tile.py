@@ -1,7 +1,7 @@
 from typing import Dict, List
-from solver import Solver, Node, Graph
-from ucs import *
-from astar import *
+from solvers.solver import Solver, Node, Graph
+from solvers.ucs import *
+from solvers.astar import *
 import timeit
 
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:

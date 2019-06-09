@@ -31,6 +31,10 @@ class Node:
     def getTotalCost(self):
         return self.g + self.h
 
+    def __lt__(self, other):
+        pass
+
+
 
 class Graph:
     def setParent(self, source, destination, cost):

@@ -1,13 +1,12 @@
 from typing import Dict, List
 import numpy as np
-from solver import Solver, Node, Graph
-from utils import PriorityQueue
+from solvers.solver import Solver, Node, Graph
+from utils.utils import PriorityQueue
 
-class AStar(Solver):
+class UCS(Solver):
     """docstring for UCS"""
     def __init__(self):
         super().__init__()
-        self.use_heuristic_cost = True
     
     def solve(self, start_state: List[int], goal_state: List[int]) -> int:
         # frontier of the graph is a priority queue
@@ -32,9 +31,9 @@ class AStar(Solver):
 
             if neighbors:
                 for neighbor in neighbors:
-                    new_cost = self.cost_so_far[str(node.getState())] + neighbor.g # actual cost
+                    new_cost = self.cost_so_far[str(node.getState())] + neighbor.g
                     if (str(neighbor.getState()) not in self.cost_so_far) or (new_cost < self.cost_so_far[str(neighbor.getState())]):
                         self.cost_so_far[str(neighbor.getState())] = new_cost
                         self.graph.setParent(node, neighbor, neighbor.g)
-                        priority = new_cost + neighbor.h # new_cost + heuristic cost: priority
-                        frontier.insert(neighbor, str(neighbor.getState()), priority) # new_cost: priority
+                        priority = new_cost # new_cost: priority
+                        frontier.insert(neighbor, str(neighbor.getState()), priority)
