@@ -15,25 +15,25 @@ class UCS(Solver):
         # each item is a tuple (node, cumulative_cost)
         start_node = Node(start_state)
         start_node.g, start_node.h = 0, 0
-        frontier.insert(start_node, str(start_node.getState()), 0)
-        self.cost_so_far[str(start_node.getState())] = 0
+        frontier.insert(start_node, str(start_node.state), 0)
+        self.cost_so_far[str(start_node.state)] = 0
 
         while not frontier.is_empty():
             node = frontier.remove()
 
-            if node.getState() == goal_state:
+            if node.state == goal_state:
                 # save some stats here
-                self.cost = self.cost_so_far[str(node.getState())]
+                self.cost = self.cost_so_far[str(node.state)]
                 self.optimal_path = self.get_optimal_path(node, goal_state)
                 return
 
-            neighbors = node.getNeighbors(node.getState(), self.graph.getPredecessors(node), self.use_heuristic_cost, goal_state)
+            neighbors = node.getNeighbors(node.state, self.graph.getPredecessors(node), self.use_heuristic_cost, goal_state)
 
             if neighbors:
                 for neighbor in neighbors:
-                    new_cost = self.cost_so_far[str(node.getState())] + neighbor.g
-                    if (str(neighbor.getState()) not in self.cost_so_far) or (new_cost < self.cost_so_far[str(neighbor.getState())]):
-                        self.cost_so_far[str(neighbor.getState())] = new_cost
+                    new_cost = self.cost_so_far[str(node.state)] + neighbor.g
+                    if (str(neighbor.state) not in self.cost_so_far) or (new_cost < self.cost_so_far[str(neighbor.state)]):
+                        self.cost_so_far[str(neighbor.state)] = new_cost
                         self.graph.setParent(node, neighbor, neighbor.g)
                         priority = new_cost # new_cost: priority
-                        frontier.insert(neighbor, str(neighbor.getState()), priority)
+                        frontier.insert(neighbor, str(neighbor.state), priority)

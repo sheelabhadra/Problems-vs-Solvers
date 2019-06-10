@@ -4,6 +4,15 @@ from solvers.ucs import *
 from solvers.astar import *
 import timeit
 
+def _heuristic(state, goal_state):
+    state.append(len(state)+1)
+    cost = 0
+    for i in range(len(state)-1):
+        if abs(state[i+1] - state[i]):
+            cost += 1
+    return cost
+
+
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     len_state, states = len(state), []
 

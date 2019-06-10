@@ -9,9 +9,6 @@ class Node:
         self.h = 0
         self.f = self.g + self.h
 
-    def getState(self):
-        return self.state
-
     def setParent(self, parent):
         self.parent = parent
 
@@ -22,18 +19,14 @@ class Node:
     def getNeighbors(self, *args, **kwargs):
         pass
 
-    def getPathCost(self):
-        pass
-
-    def getHeuristicCost(self):
-        return 0
-
-    def getTotalCost(self):
-        return self.g + self.h
-
     def __lt__(self, other):
         pass
 
+    def isGoal(self, goal):
+        return self.state == goal
+
+    def compare(self, other):
+        return 
 
 
 class Graph:
@@ -43,7 +36,7 @@ class Graph:
     def getPredecessors(self, node):
         predecessors, current_parent = {}, node.getParent()
         while(current_parent):
-            predecessors[str(current_parent.getState())] = current_parent.getState()
+            predecessors[str(current_parent.state)] = current_parent.state
             current_parent = current_parent.getParent()
         return predecessors
 
