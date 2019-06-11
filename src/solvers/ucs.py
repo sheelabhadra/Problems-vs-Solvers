@@ -24,7 +24,7 @@ class UCS(Solver):
             if node.isGoal(goal_state):
                 # save some stats here
                 self.cost = self.cost_so_far[node.hash()]
-                self.optimal_path = self.get_optimal_path(node, goal_state)
+                self.optimal_path = self.get_optimal_path(node)
                 return
 
             neighbors = node.getNeighbors(node.state, self.graph.getPredecessors(node), self.use_heuristic_cost, goal_state)
@@ -37,4 +37,3 @@ class UCS(Solver):
                         self.graph.setParent(node, neighbor, neighbor.g)
                         priority = new_cost # new_cost: priority
                         frontier.insert(neighbor, neighbor.hash(), priority)
-                        

@@ -8,4 +8,3 @@ class AStar(UCS):
     """docstring for UCS"""
     def __init__(self):
         super().__init__()
-        self.use_heuristic_cost = True
