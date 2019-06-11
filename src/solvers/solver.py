@@ -9,12 +9,6 @@ class Node:
         self.h = 0
         self.f = self.g + self.h
 
-    def setParent(self, parent):
-        self.parent = parent
-
-    def getParent(self):
-        return self.parent
-
     @abstractmethod
     def getNeighbors(self, *args, **kwargs):
         pass
@@ -26,18 +20,22 @@ class Node:
         return self.state == goal
 
     def compare(self, other):
-        return 
+        pass
+
+    @abstractmethod
+    def hash(self):
+        pass
 
 
 class Graph:
     def setParent(self, source, destination, cost):
-        destination.setParent(source)
+        destination.parent = source
 
     def getPredecessors(self, node):
-        predecessors, current_parent = {}, node.getParent()
+        predecessors, current_parent = {}, node.parent
         while(current_parent):
-            predecessors[str(current_parent.state)] = current_parent.state
-            current_parent = current_parent.getParent()
+            predecessors[current_parent.hash()] = current_parent.state
+            current_parent = current_parent.parent
         return predecessors
 
 
@@ -47,10 +45,10 @@ class Solver:
         self.cost = float('inf')
         self.cost_so_far = {}
         self.optimal_path = None
-        self.use_heuristic_cost = False
+        self.use_heuristic_cost = None
 
-    def get_optimal_path(self, goal_node, goal_state: List[int]) -> List[List[int]]:
-        path_dict = self.graph.getPredecessors(goal_node)
+    def get_optimal_path(self, node, goal_state: List[int]) -> List[List[int]]:
+        path_dict = self.graph.getPredecessors(node)
         optimal_path = [goal_state]
         for key, state in path_dict.items():
             optimal_path.append(state)

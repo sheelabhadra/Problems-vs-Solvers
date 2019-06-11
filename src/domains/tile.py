@@ -4,6 +4,64 @@ from solvers.ucs import *
 from solvers.astar import *
 import timeit
 
+def manhattan_heuristic(state, goal_state):
+    """Calculates the Manhattan distance between the given state and the goal state
+        
+    Args:
+        state: The given state
+
+    Returns:
+        manhattan_cost: The Manhattan distance
+
+    """
+    N = int(np.sqrt(len(state)))
+    state_tile = np.reshape(state, (N, N))
+    goal_state_tile = np.reshape(goal_state, (N, N))
+
+    manhattan_cost = 0
+    for si in range(N):
+        for sj in range(N):
+            for gi in range(N):
+                for gj in range(N):
+                    if not state_tile[si][sj]:
+                        continue
+                    if state_tile[si][sj] == goal_state_tile[gi][gj]:
+                        manhattan_cost += abs(gi - si) + abs(gj - sj)
+
+    return manhattan_cost
+
+
+def euclidean_heuristic(state, goal_state):
+    """Calculates the Manhattan distance between the given state and the goal state
+        
+    Args:
+        state: The given state
+
+    Returns:
+        manhattan_cost: The Manhattan distance
+
+    """
+    N = int(np.sqrt(len_state))
+    state_tile = np.reshape(state, (N, N))
+    goal_state_tile = np.reshape(goal_state, (N, N))
+
+    euclidean_cost = 0
+    for si in range(N):
+        for sj in range(N):
+            for gi in range(N):
+                for gj in range(N):
+                    if not state_tile[si][sj]:
+                        continue
+                    if state_tile[si][sj] == goal_state_tile[gi][gj]:
+                        euclidean_cost += np.sqrt((gi - si)**2 + (gj - sj)**2)
+
+    return euclidean_cost
+
+
+def _hash(self):
+    return str(self.state)
+
+
 def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     """Gets the neighbor states (next states of child nodes) of the given state
 
@@ -15,30 +73,6 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         states: The neighbor states
 
     """
-    def get_manhattan_cost(state):
-        """Calculates the Manhattan distance between the given state and the goal state
-        
-        Args:
-            state: The given state
-
-        Returns:
-            manhattan_cost: The Manhattan distance
-
-        """
-        state_tile = np.reshape(state, (N, N))
-        goal_state_tile = np.reshape(goal_state, (N, N))
-
-        manhattan_cost = 0
-        for si in range(N):
-            for sj in range(N):
-                for gi in range(N):
-                    for gj in range(N):
-                        if not state_tile[si][sj]:
-                            continue
-                        if state_tile[si][sj] == goal_state_tile[gi][gj]:
-                            manhattan_cost += abs(gi - si) + abs(gj - sj)
-
-        return manhattan_cost
 
     def swap(state: List[int], idx1: int, idx2: int) -> List[int]:
         """Swaps two elements in a list given the indices of the elements
@@ -71,8 +105,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         right_state = swap(state, blank_idx, blank_idx+1)
         
         g_cost_right = 1
-        if use_heuristic_cost:
-            h_cost_right = get_manhattan_cost(right_state)
+        if use_heuristic_cost == "manhattan":
+            h_cost_right = manhattan_heuristic(right_state, goal_state)
         else:
             h_cost_right = 0
         f_cost_right = g_cost_right + h_cost_right
@@ -82,8 +116,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         up_state = swap(state, blank_idx, blank_idx-N)
         
         g_cost_up = 1
-        if use_heuristic_cost:
-            h_cost_up = get_manhattan_cost(up_state)
+        if use_heuristic_cost == "manhattan":
+            h_cost_up = manhattan_heuristic(up_state, goal_state)
         else:
             h_cost_up = 0
         f_cost_up = g_cost_up + h_cost_up
@@ -93,8 +127,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         left_state = swap(state, blank_idx, blank_idx-1)
         
         g_cost_left = 1
-        if use_heuristic_cost:
-            h_cost_left = get_manhattan_cost(left_state)
+        if use_heuristic_cost == "manhattan":
+            h_cost_left = manhattan_heuristic(left_state, goal_state)
         else:
             h_cost_left = 0
         f_cost_left = g_cost_left + h_cost_left
@@ -104,8 +138,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         down_state = swap(state, blank_idx, blank_idx+N)
         
         g_cost_down = 1
-        if use_heuristic_cost:
-            h_cost_down = get_manhattan_cost(down_state)
+        if use_heuristic_cost == "manhattan":
+            h_cost_down = manhattan_heuristic(down_state, goal_state)
         else:
             h_cost_down = 0
         f_cost_down = g_cost_down + h_cost_down
@@ -167,15 +201,17 @@ def is_solvable(start_state: List[int]) -> bool:
     return False
 
 
-def run_solver(start_state, goal_state, solver):
+def run_solver(start_state, goal_state, solver, heuristic):
     """
     Should only contain the start node and the goal node as input
     
     """
     Node.getNeighbors = _getNeighbors
+    Node.hash = _hash
     
-    ucs_solver = solver
-    ucs_solver.solve(start_state, goal_state)
-    stats = ucs_solver.get_statistics()
+    tile_solver = solver
+    tile_solver.use_heuristic_cost = heuristic
+    tile_solver.solve(start_state, goal_state)
+    stats = tile_solver.get_statistics()
     print('TILE')
     print(stats)
