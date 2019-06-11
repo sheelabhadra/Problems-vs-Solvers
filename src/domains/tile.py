@@ -32,16 +32,16 @@ def manhattan_heuristic(state, goal_state):
 
 
 def euclidean_heuristic(state, goal_state):
-    """Calculates the Manhattan distance between the given state and the goal state
+    """Calculates the Euclidean distance between the given state and the goal state
         
     Args:
         state: The given state
 
     Returns:
-        manhattan_cost: The Manhattan distance
+        manhattan_cost: The Euclidean distance
 
     """
-    N = int(np.sqrt(len_state))
+    N = int(np.sqrt(len(state)))
     state_tile = np.reshape(state, (N, N))
     goal_state_tile = np.reshape(goal_state, (N, N))
 
@@ -107,6 +107,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         g_cost_right = 1
         if use_heuristic_cost == "manhattan":
             h_cost_right = manhattan_heuristic(right_state, goal_state)
+        elif use_heuristic_cost == "euclidean":
+            h_cost_right = euclidean_heuristic(right_state, goal_state)
         else:
             h_cost_right = 0
         f_cost_right = g_cost_right + h_cost_right
@@ -118,6 +120,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         g_cost_up = 1
         if use_heuristic_cost == "manhattan":
             h_cost_up = manhattan_heuristic(up_state, goal_state)
+        elif use_heuristic_cost == "euclidean":
+            h_cost_up = euclidean_heuristic(up_state, goal_state)
         else:
             h_cost_up = 0
         f_cost_up = g_cost_up + h_cost_up
@@ -129,6 +133,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         g_cost_left = 1
         if use_heuristic_cost == "manhattan":
             h_cost_left = manhattan_heuristic(left_state, goal_state)
+        elif use_heuristic_cost == "euclidean":
+            h_cost_left = euclidean_heuristic(left_state, goal_state)
         else:
             h_cost_left = 0
         f_cost_left = g_cost_left + h_cost_left
@@ -140,6 +146,8 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         g_cost_down = 1
         if use_heuristic_cost == "manhattan":
             h_cost_down = manhattan_heuristic(down_state, goal_state)
+        elif use_heuristic_cost == "euclidean":
+            h_cost_down = euclidean_heuristic(down_state, goal_state)
         else:
             h_cost_down = 0
         f_cost_down = g_cost_down + h_cost_down
