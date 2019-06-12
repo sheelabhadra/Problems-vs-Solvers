@@ -9,7 +9,7 @@ from solvers.astar import *
 with open("../config.yml", 'r') as stream:
     cfg = yaml.safe_load(stream)
 
-with open('experiment_stats.csv', mode='w') as csv_file:
+with open('../results/experiment_stats.csv', mode='w') as csv_file:
     fieldnames = ['Domain', 'Solver', 'Heuristic', 'Cost', 'Optimal_path']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
