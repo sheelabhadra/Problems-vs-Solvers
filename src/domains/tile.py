@@ -221,5 +221,4 @@ def run_solver(start_state, goal_state, solver, heuristic):
     tile_solver.use_heuristic_cost = heuristic
     tile_solver.solve(start_state, goal_state)
     stats = tile_solver.get_statistics()
-    print('TILE')
-    print(stats)
+    return stats

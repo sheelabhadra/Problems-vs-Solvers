@@ -66,6 +66,6 @@ class Solver:
 
     def get_statistics(self):
         # minimum cost, optimal path
-        stats = {'cost': self.cost, 'optimal_path': self.optimal_path}
+        stats = {'Cost': self.cost, 'Optimal_path': self.optimal_path}
         return stats
 

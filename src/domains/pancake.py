@@ -66,5 +66,4 @@ def run_solver(start_state, goal_state, solver, heuristic):
     pancake_solver.use_heuristic_cost = heuristic
     pancake_solver.solve(start_state, goal_state)
     stats = pancake_solver.get_statistics()
-    print('PANCAKE')
-    print(stats)
+    return stats
