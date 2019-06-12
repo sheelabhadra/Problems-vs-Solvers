@@ -13,18 +13,24 @@ class Node:
     def getNeighbors(self, *args, **kwargs):
         pass
 
-    def __lt__(self, other):
+    @abstractmethod
+    def hash(self):
         pass
 
     def isGoal(self, goal):
         return self.state == goal
 
-    def compare(self, other):
-        pass
+    def __eq__(self, other):
+        return self.g == other.g
 
-    @abstractmethod
-    def hash(self):
-        pass
+    def __lt__(self, other):
+        return self.g < other.g
+
+    def __gt__(self, other):
+        return self.g > other.g
+
+    def __repr__(self):
+        return "%s" % (self.state)
 
 
 class Graph:
