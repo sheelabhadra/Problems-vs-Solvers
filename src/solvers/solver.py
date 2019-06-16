@@ -52,8 +52,9 @@ class Solver:
         self.cost_so_far = {}
         self.optimal_path = None
         self.use_heuristic_cost = None
+        self.nodes_expanded = 0
 
-    def get_optimal_path(self, node) -> List[List[int]]:
+    def get_optimal_path(self, node):
         path_dict = self.graph.getPredecessors(node)
         optimal_path = [node.state]
         for key, state in path_dict.items():
@@ -66,6 +67,6 @@ class Solver:
 
     def get_statistics(self):
         # minimum cost, optimal path
-        stats = {'Cost': self.cost, 'Optimal_path': self.optimal_path}
+        stats = {'Cost': self.cost, 'Expanded_count': self.nodes_expanded, 'Generated_count': len(self.cost_so_far)}
         return stats
 

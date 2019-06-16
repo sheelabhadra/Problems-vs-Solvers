@@ -20,6 +20,7 @@ class UCS(Solver):
 
         while not frontier.is_empty():
             node = frontier.remove()
+            self.nodes_expanded += 1
 
             if node.isGoal(goal_state):
                 # save some stats here
@@ -35,5 +36,7 @@ class UCS(Solver):
                     if (neighbor.hash() not in self.cost_so_far) or (new_cost < self.cost_so_far[neighbor.hash()]):
                         self.cost_so_far[neighbor.hash()] = new_cost
                         self.graph.setParent(node, neighbor, neighbor.g)
-                        priority = new_cost # new_cost: priority
+                        priority = new_cost + neighbor.h # new_cost: priority
                         frontier.insert(neighbor, neighbor.hash(), priority)
+
+
