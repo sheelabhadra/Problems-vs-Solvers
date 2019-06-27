@@ -1,0 +1,3 @@
+Domain,Solver,Heuristic,Len_state,Cost,Expanded_count,Generated_count,CPU_time
+tile,UCS,None,9,22,90989.7,109095.4667,18.19430729
+tile,AStar,manhattan,9,22,1128.833333,1712.333333,0.583084096

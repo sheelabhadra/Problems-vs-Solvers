@@ -18,7 +18,7 @@ class Node:
         pass
 
     def isGoal(self, goal):
-        return self.state == goal
+        return self.hash() == goal.hash()
 
     def __eq__(self, other):
         return self.g == other.g

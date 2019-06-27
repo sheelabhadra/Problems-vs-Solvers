@@ -18,7 +18,7 @@ def _hash(self):
     return str(self.state)
 
 
-def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
+def _getNeighbors(self, state: List[int], state_cost: int, use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     len_state, states = len(state), []
 
     for i in range(1, len_state):
@@ -33,16 +33,13 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         # concatenate the two lists to obtain the new state
         list_state = sub_list + tail_list
 
-        # insert the states and the edge cost if the state does not exist in dict_predecessors
-        # if str(list_state) not in dict_predecessors:
-        g_cost = 1 # i+1
+        g_cost = state_cost + 1 # i+1
         
         if use_heuristic_cost == "gap":
             h_cost = gap_heuristic(state, goal_state)
         else:
             h_cost = 0
 
-        f_cost = g_cost + h_cost
         list_state = Node(list_state)
         list_state.g, list_state.h = g_cost, h_cost
 

@@ -20,7 +20,8 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
         if cfg['DOMAIN']['NAME'] == "pancake":
             arr = [x for x in range(1, limit+1)]
         elif cfg['DOMAIN']['NAME'] == "tile":
-            arr = [x for x in range(0, limit+1)]
+            arr = [x for x in range(1, limit)]
+            arr.append(0)
         
         scenarios_str = set([])
         scenarios = []
@@ -28,8 +29,16 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
         while len(scenarios) < num_scenarios:
             sc = list(np.random.permutation(arr))
             if str(sc) not in scenarios_str:
-                scenarios_str.add(str(sc))
-                scenarios.append(sc)
+                if cfg['DOMAIN']['NAME'] == "tile":
+                    if tile.is_solvable(sc):
+                        scenarios_str.add(str(sc))
+                        scenarios.append(sc)
+                elif cfg['DOMAIN']['NAME'] == "pancake":
+                    scenarios_str.add(str(sc))
+                    scenarios.append(sc)
+        # print(tile.is_solvable([15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]))
+        # # scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
+        # scenarios = [[15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]]
 
         for sol in cfg['SOLVER']:
             cost, generated, expanded, cpu_time = 0, 0, 0, 0
@@ -42,6 +51,7 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
                 cost += stats['Cost']
                 generated += stats['Generated_count']
                 expanded += stats['Expanded_count']
+                # print("Done!" , cpu_time)
 
             stats['CPU_time'] = cpu_time/num_scenarios
             stats['Generated_count'] = generated/num_scenarios
