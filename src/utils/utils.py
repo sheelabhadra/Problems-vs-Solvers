@@ -2,26 +2,6 @@ from typing import Dict, List
 import heapq
 import itertools
 
-"""
-class PriorityQueue:
-    def __init__(self):
-        self._queue = []
-        self.count = 0
-
-    def insert(self, item, priority):
-        self.count += 1
-        heapq.heappush(self._queue, (priority, self.count, item))
-
-    def remove(self):
-        return heapq.heappop(self._queue)[-1]
-
-    def is_empty(self):
-        return len(self._queue) == 0
-
-    def size(self):
-        return len(self._queue)
-"""
-
 class PriorityQueue:
     def __init__(self):
         self.pq = []                         # list of entries arranged in a heap
@@ -33,7 +13,7 @@ class PriorityQueue:
         'Add a new task or update the priority of an existing task'
         if task.hash() in self.entry_finder:
             self.delete(task)
-        count = next(self.counter)
+        count = -next(self.counter)
         entry = [priority, count, task]
         self.entry_finder[task.hash()] = entry
         heapq.heappush(self.pq, entry)

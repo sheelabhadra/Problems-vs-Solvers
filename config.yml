@@ -1,8 +1,8 @@
-OUTPUT_PATH: ../results/pancake_experiment_stats_ver_2.csv
+OUTPUT_PATH: ../results/pancake_10_C10.csv
 NUM_TRIALS: 1
 DOMAIN:
   NAME: pancake
-  STATE_SIZE: [8]
+  STATE_SIZE: [10]
 SOLVER:
   # - NAME: UCS()
   #   HEURISTIC: None

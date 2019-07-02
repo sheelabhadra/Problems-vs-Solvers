@@ -23,7 +23,6 @@ def _getNeighbors(self, state: List[int], state_cost: int, use_heuristic_cost, g
 
     for i in range(1, len_state):
         sub_list = state[0:i+1]
-        len_sub_list = len(sub_list)
 
         tail_list = state[i+1:len_state]
 
@@ -36,17 +35,17 @@ def _getNeighbors(self, state: List[int], state_cost: int, use_heuristic_cost, g
         g_cost = state_cost + 1 # i+1
         
         if use_heuristic_cost == "gap":
-            h_cost = gap_heuristic(state, goal_state)
+            h_cost = gap_heuristic(list_state, goal_state)
         else:
             h_cost = 0
 
         list_state = Node(list_state)
         list_state.g, list_state.h = g_cost, h_cost
 
-        states.append((list_state)) # cost: number of flips
+        states.append(list_state) # cost: number of flips
 
     # if len(states):
-    #     states.pop(0) # removes the first state which is the same as the state
+    #     states.pop(0) # removes the first state which is the same as the statezs
 
     return states
 

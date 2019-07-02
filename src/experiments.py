@@ -28,12 +28,16 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
         num_scenarios = cfg['NUM_TRIALS']
         while len(scenarios) < num_scenarios:
             sc = list(np.random.permutation(arr))
+            if sc == arr:
+                continue
             if str(sc) not in scenarios_str:
                 if cfg['DOMAIN']['NAME'] == "tile":
                     if tile.is_solvable(sc):
                         scenarios_str.add(str(sc))
                         scenarios.append(sc)
                 elif cfg['DOMAIN']['NAME'] == "pancake":
+                    # stats = pancake.run_solver(sc, sorted(sc), AStar(), "gap")
+                    # if stats['Cost'] == 10:
                     scenarios_str.add(str(sc))
                     scenarios.append(sc)
         # print(tile.is_solvable([15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]))

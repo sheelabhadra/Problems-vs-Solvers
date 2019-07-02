@@ -1,0 +1,3 @@
+Domain,Solver,Heuristic,Len_state,Cost,Expanded_count,Generated_count,CPU_time
+pancake,UCS,None,10,10,3147118.167,3612630.5,322.458738
+pancake,AStar,gap,10,10,38.83333333,294.8,0.006843805
