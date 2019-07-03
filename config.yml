@@ -1,4 +1,4 @@
-OUTPUT_PATH: ../results/pancake_10_C10.csv
+OUTPUT_PATH: ../results/pancake_updated_pq_10.csv
 NUM_TRIALS: 1
 DOMAIN:
   NAME: pancake

@@ -15,7 +15,7 @@ class UCS(Solver):
         start_node = Node(start_state)
         goal_node = Node(goal_state)
 
-        openSet.insert(start_node, 0)
+        openSet.insert(start_node, 0, 0)
 
         self.cost = float('inf')
 
@@ -39,8 +39,6 @@ class UCS(Solver):
                     
                     if neighbor.hash() in closedSet:
                         continue
-                        
-                    priority = neighbor.g + neighbor.h
                     
                     self.cost_so_far[neighbor.hash()] = neighbor.g
                     self.graph.setParent(current, neighbor, neighbor.g)
@@ -49,6 +47,6 @@ class UCS(Solver):
                         self.cost = neighbor.g
                         possible_goal = neighbor
 
-                    openSet.insert(neighbor, priority)
+                    openSet.insert(neighbor, neighbor.g, neighbor.h)
 
             closedSet.add(current.hash())

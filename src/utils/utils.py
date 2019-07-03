@@ -7,14 +7,14 @@ class PriorityQueue:
         self.pq = []                         # list of entries arranged in a heap
         self.entry_finder = {}               # mapping of tasks to entries
         self.REMOVED = '<removed-task>'      # placeholder for a removed task
-        self.counter = itertools.count()     # unique sequence count
+        self.counter = itertools.count() 
 
-    def insert(self, task, priority=0):
+    def insert(self, task, g=0, h=0):
         'Add a new task or update the priority of an existing task'
         if task.hash() in self.entry_finder:
             self.delete(task)
-        count = -next(self.counter)
-        entry = [priority, count, task]
+        count = next(self.counter)
+        entry = [g+h, (h,g), count, task]
         self.entry_finder[task.hash()] = entry
         heapq.heappush(self.pq, entry)
 
@@ -26,7 +26,7 @@ class PriorityQueue:
     def remove(self):
         'Remove and return the lowest priority task. Raise KeyError if empty.'
         while self.pq:
-            priority, count, task = heapq.heappop(self.pq)
+            priority, order, count, task = heapq.heappop(self.pq)
             if task is not self.REMOVED:
                 del self.entry_finder[task.hash()]
                 return task
@@ -36,7 +36,7 @@ class PriorityQueue:
         'Look at the lowest priority task. Raise KeyError if empty.'
         i = 0
         while i < len(self.pq):
-            priority, count, task = self.pq[i]
+            priority, order, count, task = self.pq[i]
             if task is not self.REMOVED:
                 return priority
             i += 1
