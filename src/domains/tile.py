@@ -62,7 +62,7 @@ def _hash(self):
     return str(self.state)
 
 
-def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
+def _getNeighbors(self, state: List[int], state_cost: int, use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
     """Gets the neighbor states (next states of child nodes) of the given state
 
     Args:
@@ -104,7 +104,7 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         # right
         right_state = swap(state, blank_idx, blank_idx+1)
         
-        g_cost_right = 1
+        g_cost_right = state_cost + 1
         if use_heuristic_cost == "manhattan":
             h_cost_right = manhattan_heuristic(right_state, goal_state)
         elif use_heuristic_cost == "euclidean":
@@ -117,7 +117,7 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         # up
         up_state = swap(state, blank_idx, blank_idx-N)
         
-        g_cost_up = 1
+        g_cost_up = state_cost + 1
         if use_heuristic_cost == "manhattan":
             h_cost_up = manhattan_heuristic(up_state, goal_state)
         elif use_heuristic_cost == "euclidean":
@@ -130,7 +130,7 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         # left 
         left_state = swap(state, blank_idx, blank_idx-1)
         
-        g_cost_left = 1
+        g_cost_left = state_cost + 1
         if use_heuristic_cost == "manhattan":
             h_cost_left = manhattan_heuristic(left_state, goal_state)
         elif use_heuristic_cost == "euclidean":
@@ -143,7 +143,7 @@ def _getNeighbors(self, state: List[int], dict_predecessors: Dict[str, List], us
         # down
         down_state = swap(state, blank_idx, blank_idx+N)
         
-        g_cost_down = 1
+        g_cost_down = state_cost + 1
         if use_heuristic_cost == "manhattan":
             h_cost_down = manhattan_heuristic(down_state, goal_state)
         elif use_heuristic_cost == "euclidean":
