@@ -6,6 +6,7 @@ import domains.pancake as pancake
 import domains.tile as tile
 from solvers.ucs import *
 from solvers.astar import *
+from solvers.rtastar import *
 
 # Read YAML file
 with open("../config.yml", 'r') as stream:
@@ -43,8 +44,8 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
         # print(tile.is_solvable([15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]))
         # # scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
         # scenarios = [[15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]]
-        scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
-        print(scenarios)
+        # scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
+        # print(scenarios)
         for sol in cfg['SOLVER']:
             cost, generated, expanded, cpu_time = 0, 0, 0, 0
             for sc in scenarios:

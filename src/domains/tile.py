@@ -2,6 +2,7 @@ from typing import Dict, List
 from solvers.solver import Solver, Node, Graph
 from solvers.ucs import *
 from solvers.astar import *
+from solvers.rtastar import *
 import timeit
 
 def manhattan_heuristic(state, goal_state):
