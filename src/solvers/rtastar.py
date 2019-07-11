@@ -30,7 +30,7 @@ class RTAStar(Solver):
         super().__init__()
         self.cost_table = {}
 
-    def solve(self, start_state, goal_state) -> int:
+    def solve(self, start_state, goal_state):
         # No lookahead version
         start_node = Node(start_state)
         goal_node = Node(goal_state)
@@ -40,43 +40,30 @@ class RTAStar(Solver):
 
         while not current_node.isGoal(goal_node):
             self.nodes_expanded += 1
-            neighbors = current_node.getNeighbors(current_node.state, goal_node.state, self.use_heuristic_cost, current_node.g)
+
+            neighbors = current_node.getNeighbors(current_node.state, goal_node.state, self.use_heuristic_cost)
+            first_minm, second_minm = float('inf'), float('inf')
 
             if neighbors:
-                f_min, min_neighbor = float('inf'), None
-                idx, min_idx = 0, 0
                 for neighbor in neighbors:
                     if neighbor.hash() in self.cost_table:
-                        f = neighbor.g + self.cost_table[neighbor.hash()]
+                        neighbor_f = neighbor.g + self.cost_table[neighbor.hash()]
                     else:
-                        f = neighbor.g + neighbor.h
+                        neighbor_f = neighbor.g + neighbor.h
 
-                    if f < f_min:
-                        f_min = f
-                        min_neighbor = neighbor
-                        min_idx = idx
-                    idx += 1
-                
-                # Get the 2nd min
-                neighbors.pop(min_idx)
+                    if neighbor_f < first_minm:
+                        second_minm = first_minm
+                        first_minm = neighbor_f
+                        next_node = neighbor
 
-                if neighbors:
-                    f_min, min_neighbor_2 = float('inf'), None
-                    for neighbor in neighbors:
-                        if neighbor.hash() in self.cost_table:
-                            f = neighbor.g + self.cost_table[neighbor.hash()]
-                            # neighbor.h = cost_table[neighbor.hash()]
-                        else:
-                            f = neighbor.g + neighbor.h
-                    
-                        if f < f_min:
-                            f_min = f
-                            min_neighbor_2 = neighbor
-                    
-                self.cost_table[current_node.hash()] = f_min
-                self.graph.setParent(current_node, min_neighbor)
-                
-                current_node = min_neighbor
+                    elif neighbor_f < second_minm and neighbor_f >= first_minm:
+                        second_minm = neighbor_f
+            
+                self.cost_table[current_node.hash()] = second_minm
+                self.graph.setParent(current_node, next_node)
+
+                current_node = next_node
 
         self.optimal_path = self.get_optimal_path(current_node)
         self.cost = self.nodes_expanded
+        
