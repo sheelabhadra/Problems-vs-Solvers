@@ -34,7 +34,7 @@ class Node:
 
 
 class Graph:
-    def setParent(self, source, destination, cost):
+    def setParent(self, source, destination, cost=0):
         destination.parent = source
 
     def getPredecessors(self, node):

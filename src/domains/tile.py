@@ -3,6 +3,7 @@ from solvers.solver import Solver, Node, Graph
 from solvers.ucs import *
 from solvers.astar import *
 from solvers.rtastar import *
+from solvers.lrtastar import *
 import timeit
 
 def manhattan_heuristic(state, goal_state):
@@ -63,7 +64,7 @@ def _hash(self):
     return str(self.state)
 
 
-def _getNeighbors(self, state: List[int], state_cost: int, use_heuristic_cost, goal_state: List[int]) -> List[List[int]]:
+def _getNeighbors(self, state, goal_state, use_heuristic_cost, state_cost=0):
     """Gets the neighbor states (next states of child nodes) of the given state
 
     Args:

@@ -7,6 +7,7 @@ import domains.tile as tile
 from solvers.ucs import *
 from solvers.astar import *
 from solvers.rtastar import *
+from solvers.lrtastar import *
 
 # Read YAML file
 with open("../config.yml", 'r') as stream:

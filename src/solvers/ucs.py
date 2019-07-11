@@ -24,13 +24,14 @@ class UCS(Solver):
         while not openSet.is_empty():
             if self.cost <= openSet.peek():
                 self.optimal_path = self.get_optimal_path(possible_goal)
+                print(self.cost)
                 return
 
             current = openSet.remove()
 
             self.nodes_expanded += 1
             
-            neighbors = current.getNeighbors(current.state, current.g, self.use_heuristic_cost, goal_node.state)
+            neighbors = current.getNeighbors(current.state, goal_node.state, self.use_heuristic_cost, current.g)
 
             if neighbors:
                 for neighbor in neighbors:
