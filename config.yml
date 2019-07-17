@@ -1,10 +1,16 @@
-OUTPUT_PATH: ../results/tile_4.csv
+OUTPUT_PATH: ../results/pancake_lrtastar_dqn.csv
 NUM_TRIALS: 1
 DOMAIN:
-  NAME: tile
-  STATE_SIZE: [16]
+  NAME: pancake
+  STATE_SIZE: [6]
 SOLVER:
-  - NAME: UCS()
-    HEURISTIC: None
+  # - NAME: UCS()
+  #   HEURISTIC: None
   - NAME: AStar()
-    HEURISTIC: manhattan
+    HEURISTIC: gap
+  # - NAME: RTAStar()
+  #   HEURISTIC: manhattan
+  - NAME: LRTAStar()
+    HEURISTIC: gap
+  # - NAME: LRTAStar()
+  #   HEURISTIC: None

@@ -24,6 +24,7 @@ class UCS(Solver):
         while not openSet.is_empty():
             if self.cost <= openSet.peek():
                 self.optimal_path = self.get_optimal_path(possible_goal)
+                print(self.cost)
                 return
 
             current = openSet.remove()

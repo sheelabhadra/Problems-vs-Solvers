@@ -6,6 +6,11 @@ from solvers.rtastar import *
 from solvers.lrtastar import *
 import timeit
 
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.optimizers import Adam
+
+
 def manhattan_heuristic(state, goal_state):
     """Calculates the Manhattan distance between the given state and the goal state
         
@@ -211,6 +216,16 @@ def is_solvable(start_state: List[int]) -> bool:
     return False
 
 
+def _build_model(self):
+    # Neural Net for Deep-Q learning Model
+    model = Sequential()
+    model.add(Dense(32, input_dim=self.state_size, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+    model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+    return model
+
+
 def run_solver(start_state, goal_state, solver, heuristic):
     """
     Should only contain the start node and the goal node as input
@@ -218,6 +233,8 @@ def run_solver(start_state, goal_state, solver, heuristic):
     """
     Node.getNeighbors = _getNeighbors
     Node.hash = _hash
+
+    DQNAgent.build_model = _build_model
     
     tile_solver = solver
     tile_solver.use_heuristic_cost = heuristic
