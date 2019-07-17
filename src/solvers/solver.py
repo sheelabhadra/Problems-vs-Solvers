@@ -14,7 +14,7 @@ class Node:
         pass
 
     def isGoal(self, goal):
-    return hash(self) == hash(goal)
+        return hash(self) == hash(goal)
 
     @abstractmethod
     def __hash__(self):
