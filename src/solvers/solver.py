@@ -13,12 +13,12 @@ class Node:
     def getNeighbors(self, *args, **kwargs):
         pass
 
-    @abstractmethod
-    def hash(self):
-        pass
-
     def isGoal(self, goal):
-        return self.hash() == goal.hash()
+    return hash(self) == hash(goal)
+
+    @abstractmethod
+    def __hash__(self):
+        pass
 
     def __eq__(self, other):
         return self.g == other.g
@@ -40,7 +40,7 @@ class Graph:
     def getPredecessors(self, node):
         predecessors, current_parent = {}, node.parent
         while(current_parent):
-            predecessors[current_parent.hash()] = current_parent.state
+            predecessors[current_parent] = current_parent.state
             current_parent = current_parent.parent
         return predecessors
 

@@ -19,7 +19,7 @@ class UCS(Solver):
 
         self.cost = float('inf')
 
-        self.cost_so_far[start_node.hash()] = 0
+        self.cost_so_far[start_node] = 0
         
         while not openSet.is_empty():
             if self.cost <= openSet.peek():
@@ -35,13 +35,13 @@ class UCS(Solver):
 
             if neighbors:
                 for neighbor in neighbors:
-                    if neighbor.hash() in openSet.entry_finder and neighbor.g >= self.cost_so_far[neighbor.hash()]:
+                    if neighbor in openSet.entry_finder and neighbor.g >= self.cost_so_far[neighbor]:
                         continue
                     
-                    if neighbor.hash() in closedSet:
+                    if neighbor in closedSet:
                         continue
                     
-                    self.cost_so_far[neighbor.hash()] = neighbor.g
+                    self.cost_so_far[neighbor] = neighbor.g
                     self.graph.setParent(current, neighbor, neighbor.g)
         
                     if neighbor.isGoal(goal_node) and neighbor.g < self.cost:
@@ -50,4 +50,5 @@ class UCS(Solver):
 
                     openSet.insert(neighbor, neighbor.g, neighbor.h)
 
-            closedSet.add(current.hash())
+            closedSet.add(current)
+

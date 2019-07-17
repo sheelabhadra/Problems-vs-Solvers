@@ -11,16 +11,16 @@ class PriorityQueue:
 
     def insert(self, task, g=0, h=0):
         'Add a new task or update the priority of an existing task'
-        if task.hash() in self.entry_finder:
+        if task in self.entry_finder:
             self.delete(task)
         count = next(self.counter)
         entry = [g+h, (h,g), count, task]
-        self.entry_finder[task.hash()] = entry
+        self.entry_finder[task] = entry
         heapq.heappush(self.pq, entry)
 
     def delete(self, task):
         'Mark an existing task as REMOVED.  Raise KeyError if not found.'
-        entry = self.entry_finder.pop(task.hash())
+        entry = self.entry_finder.pop(task)
         entry[-1] = self.REMOVED
 
     def remove(self):
@@ -28,7 +28,7 @@ class PriorityQueue:
         while self.pq:
             priority, order, count, task = heapq.heappop(self.pq)
             if task is not self.REMOVED:
-                del self.entry_finder[task.hash()]
+                del self.entry_finder[task]
                 return task
         raise KeyError('pop from an empty priority queue')
 

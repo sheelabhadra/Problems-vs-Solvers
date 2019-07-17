@@ -2,7 +2,7 @@ OUTPUT_PATH: ../results/pancake_lrtastar_dqn.csv
 NUM_TRIALS: 1
 DOMAIN:
   NAME: pancake
-  STATE_SIZE: [6]
+  STATE_SIZE: [8]
 SOLVER:
   # - NAME: UCS()
   #   HEURISTIC: None

@@ -84,8 +84,8 @@ class LRTAStar(Solver):
 
                 if neighbors:
                     for neighbor in neighbors:
-                        if neighbor.hash() in self.cost_table:
-                            neighbor_f = neighbor.g + self.cost_table[neighbor.hash()]
+                        if neighbor in self.cost_table:
+                            neighbor_f = neighbor.g + self.cost_table[neighbor]
                         else:
                             neighbor_f = neighbor.g + neighbor.h
 
@@ -93,7 +93,7 @@ class LRTAStar(Solver):
                             current_node.h = neighbor_f
                             next_node = neighbor
                     
-                    self.cost_table[current_node.hash()] = current_node.h
+                    self.cost_table[current_node] = current_node.h
                     self.graph.setParent(current_node, next_node)
 
                     current_node = next_node

@@ -66,7 +66,7 @@ def euclidean_heuristic(state, goal_state):
 
 
 def _hash(self):
-    return str(self.state)
+    return hash(str(self.state))
 
 
 def _getNeighbors(self, state, goal_state, use_heuristic_cost, state_cost=0):
@@ -232,7 +232,7 @@ def run_solver(start_state, goal_state, solver, heuristic):
     
     """
     Node.getNeighbors = _getNeighbors
-    Node.hash = _hash
+    Node.__hash__ = _hash
 
     DQNAgent.build_model = _build_model
     

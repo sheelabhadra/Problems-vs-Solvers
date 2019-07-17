@@ -46,8 +46,8 @@ class RTAStar(Solver):
 
             if neighbors:
                 for neighbor in neighbors:
-                    if neighbor.hash() in self.cost_table:
-                        neighbor_f = neighbor.g + self.cost_table[neighbor.hash()]
+                    if neighbor in self.cost_table:
+                        neighbor_f = neighbor.g + self.cost_table[neighbor]
                     else:
                         neighbor_f = neighbor.g + neighbor.h
 
@@ -59,7 +59,7 @@ class RTAStar(Solver):
                     elif neighbor_f < second_minm and neighbor_f >= first_minm:
                         second_minm = neighbor_f
             
-                self.cost_table[current_node.hash()] = second_minm
+                self.cost_table[current_node] = second_minm
                 self.graph.setParent(current_node, next_node)
 
                 current_node = next_node
