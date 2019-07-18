@@ -46,8 +46,9 @@ with open(cfg['OUTPUT_PATH'], mode='a') as csv_file:
         # scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
         # scenarios = [[15,2,1,12,8,5,6,11,4,9,10,7,3,14,3,0]]
         # scenarios = [[1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]]
-        print(scenarios)
+        # print(scenarios)
         # scenarios = [[2,4,3,1]]
+        # scenarios = [[1,3,2,4,5]]
         for sol in cfg['SOLVER']:
             cost, generated, expanded, cpu_time = 0, 0, 0, 0
             for sc in scenarios:

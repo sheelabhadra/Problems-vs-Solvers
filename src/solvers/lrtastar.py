@@ -16,6 +16,8 @@ class DQNAgent:
         self.memory = deque(maxlen=2000)
         self.gamma = 0.95    # discount rate
         self.epsilon = 1.0  # exploration rate
+        # self.epsilon_min = 0.01
+        # self.epsilon_decay = 0.995
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
         self.learning_rate = 0.01
@@ -47,10 +49,12 @@ class DQNAgent:
                 next_state = np.reshape(next_state, [1, self.state_size])
                 # target = reward + self.gamma*self.model.predict(next_state)
                 target = self.model.predict(next_state, batch_size=1)
+                targets.append(target[-1][-1] + 1)
             else:
                 target = reward
+                targets.append(target[-1][-1])
             states.append(state)
-            targets.append(target[-1][-1])
+            # targets.append(target[-1][-1])
         states, targets = np.array(states), np.array(targets)
         history = self.model.fit(states, targets, batch_size=self.batch_size, epochs=1, verbose=0)
         
@@ -113,7 +117,7 @@ class LRTAStar(Solver):
         start_node = Node(start_state)
         goal_node = Node(goal_state)
 
-        episodes = 200
+        episodes = 500
         batch_size = 32
         agent = DQNAgent(len(start_node.state), batch_size)
 
@@ -155,7 +159,7 @@ class LRTAStar(Solver):
             
             cost = nodes_expanded
             # print the score and break out of the loop
-            if not e%10:
+            if not e%50:
                 print("episode: {}/{}, cost: {}".format(e, episodes, cost))
 
             if len(agent.memory) >= agent.batch_size:
@@ -167,4 +171,6 @@ class LRTAStar(Solver):
         plt.title('Heuristic value')
         plt.ylabel('H')
         plt.xlabel('Episode')
+        plt.ylim([-5.0, 50.0])
+        plt.grid('on')
         plt.show()
