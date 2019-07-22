@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
+"""
 # Deep Q-learning Agent
 class DQNAgent:
     def __init__(self, state_size, batch_size):
@@ -31,9 +32,6 @@ class DQNAgent:
         self.memory.append((state, reward, next_state, done))
 
     def act(self, h_values, states):
-        """Returns the next state
-            
-        """
         if np.random.rand() <= self.epsilon:
             idx = random.randrange(len(states))
             return states[idx], h_values[idx]
@@ -67,51 +65,51 @@ class LRTAStar(Solver):
         super().__init__()
         self.cost_table = {}
 
-    """
-    def solve(self, start_state, goal_state):
-        # No lookahead version
-        start_node = Node(start_state)
-        goal_node = Node(goal_state)
+    
+    # def solve(self, start_state, goal_state):
+    #     # No lookahead version
+    #     start_node = Node(start_state)
+    #     goal_node = Node(goal_state)
 
-        queue = []
+    #     queue = []
 
-        while True:
-            self.nodes_expanded = 0
-            self.cost = float('inf')
-            current_node = start_node
+    #     while True:
+    #         self.nodes_expanded = 0
+    #         self.cost = float('inf')
+    #         current_node = start_node
 
-            while not current_node.isGoal(goal_node):
-                self.nodes_expanded += 1
+    #         while not current_node.isGoal(goal_node):
+    #             self.nodes_expanded += 1
 
-                neighbors = current_node.getNeighbors(current_node.state, goal_node.state, self.use_heuristic_cost)
-                current_node.h = float('inf')
+    #             neighbors = current_node.getNeighbors(current_node.state, goal_node.state, self.use_heuristic_cost)
+    #             current_node.h = float('inf')
 
-                if neighbors:
-                    for neighbor in neighbors:
-                        if neighbor in self.cost_table:
-                            neighbor_f = neighbor.g + self.cost_table[neighbor]
-                        else:
-                            neighbor_f = neighbor.g + neighbor.h
+    #             if neighbors:
+    #                 for neighbor in neighbors:
+    #                     if neighbor in self.cost_table:
+    #                         neighbor_f = neighbor.g + self.cost_table[neighbor]
+    #                     else:
+    #                         neighbor_f = neighbor.g + neighbor.h
 
-                        if neighbor_f < current_node.h:
-                            current_node.h = neighbor_f
-                            next_node = neighbor
+    #                     if neighbor_f < current_node.h:
+    #                         current_node.h = neighbor_f
+    #                         next_node = neighbor
                     
-                    self.cost_table[current_node] = current_node.h
-                    self.graph.setParent(current_node, next_node)
+    #                 self.cost_table[current_node] = current_node.h
+    #                 self.graph.setParent(current_node, next_node)
 
-                    current_node = next_node
+    #                 current_node = next_node
 
-            self.optimal_path = self.get_optimal_path(current_node)
-            self.cost = self.nodes_expanded
-            queue.append(self.cost)
+    #         self.optimal_path = self.get_optimal_path(current_node)
+    #         self.cost = self.nodes_expanded
+    #         queue.append(self.cost)
 
-            if len(queue) >= 10:
-                last = queue[-10:]
-                if len(set(last)) == 1:
-                    print(self.cost_table)
-                    return
-    """
+    #         if len(queue) >= 10:
+    #             last = queue[-10:]
+    #             if len(set(last)) == 1:
+    #                 print(self.cost_table)
+    #                 return
+
     
     def solve(self, start_state, goal_state):
         start_node = Node(start_state)
@@ -174,3 +172,118 @@ class LRTAStar(Solver):
         plt.ylim([-5.0, 50.0])
         plt.grid('on')
         plt.show()
+
+
+"""
+
+# Deep Q-learning Agent
+class DQNAgent:
+    def __init__(self, state_size, batch_size):
+        self.state_size = state_size
+        self.memory = deque(maxlen=20000)
+        self.epsilon = 1.0  # exploration rate
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.99
+        self.learning_rate = 0.001
+        self.batch_size = 64
+        self.model = self.build_model()
+
+    def build_model(self, *args):
+        pass
+
+    def remember(self, state, next_states):
+        self.memory.append((state, next_states))
+
+    def act(self, h_values, states):
+        if np.random.rand() <= self.epsilon:
+            idx = random.randrange(len(states))
+            return states[idx], h_values[idx]
+        else:
+            idx = np.argmin(h_values)
+            return states[idx], h_values[idx]
+
+    def replay(self):
+        minibatch = random.sample(self.memory, self.batch_size)
+        states, targets = [], []
+        for state, next_states in minibatch:
+            h_pred_min = float('inf')
+            if not next_states:
+                h_pred_min = -1.0
+            else:
+                for next_state in next_states:
+                    state_reshaped = np.reshape(next_state, [1, self.state_size])
+                    h_pred = self.model.predict(state_reshaped, batch_size=1)
+                    if h_pred[-1][-1] < h_pred_min:
+                        h_pred_min = h_pred[-1][-1]
+            target = h_pred_min + 1
+            states.append(state)
+            targets.append(target)
+        states, targets = np.array(states), np.array(targets)
+        history = self.model.fit(states, targets, batch_size=self.batch_size, epochs=1, verbose=0)
+        
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
+
+
+class LRTAStar(Solver):
+    def __init__(self):
+        super().__init__()
+        self.cost_table = {}
+    
+    def solve(self, start_state, goal_state):
+        start_node = Node(start_state)
+        goal_node = Node(goal_state)
+
+        episodes = 300
+        batch_size = 64
+        agent = DQNAgent(len(start_node.state), batch_size)
+
+        H_history = []
+
+        # Iterate the game
+        # for e in range(episodes):
+        e = 0
+        while e < 10 or not abs(agent.model.predict(np.reshape(goal_node.state, [1, agent.state_size]))) < 0.1:
+            # reset state in the beginning of each game
+            nodes_expanded = 0
+            cost = float('inf')
+            current_node = start_node
+
+            done = 0
+            time_t = 0
+            while not current_node.isGoal(goal_node) and time_t < 200:
+                nodes_expanded += 1
+
+                neighbors = current_node.getNeighbors(current_node.state, goal_node.state, self.use_heuristic_cost)
+
+                if neighbors:
+                    H_values = []
+                    for neighbor in neighbors:
+                        #choose an action epsilon greedy
+                        state = np.reshape(neighbor.state, [1, agent.state_size])
+                        h_pred = agent.model.predict(state)
+                        H_values.append(h_pred)
+
+                    next_node, h_value = agent.act(H_values, neighbors)
+                    self.graph.setParent(current_node, next_node)
+                    agent.remember(current_node.state, [x.state for x in neighbors])
+
+                    if len(agent.memory) >= agent.batch_size:
+                        agent.replay()
+                                            
+                    current_node = next_node
+                    time_t += 1
+
+            if current_node.isGoal(goal_node):
+                done = 1
+                # determine how to add the h value to the replay memory after you reach the goal
+                agent.remember(current_node.state, None)
+            
+            cost = nodes_expanded
+            print("start heuristic (= optimal cost): ", agent.model.predict(np.reshape(start_node.state, [1, agent.state_size])))
+            print("goal heuristic (= 0): ", agent.model.predict(np.reshape(goal_node.state, [1, agent.state_size])))
+            # print the score and break out of the loop
+            if not e%1:
+               # print("episode: {}/{}, cost: {}".format(e, episodes, cost))
+               print("episode: {}, cost: {}".format(e, cost))
+            e += 1

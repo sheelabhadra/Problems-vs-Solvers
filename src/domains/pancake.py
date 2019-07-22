@@ -61,8 +61,8 @@ def _build_model(self):
     # Neural Net for Deep-Q learning Model
     model = Sequential()
     model.add(Dense(32, input_dim=self.state_size, activation='relu'))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dense(1, activation='linear'))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(1))
     model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
     return model
 
